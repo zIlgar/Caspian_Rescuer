@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Devices
+
+{% endblock title %}
+
+{% block content %}
+
+<div style="width:100%; overflow-y:scroll;" id="devices">
+    <template id="device">
+      <div class="card m-5">
+          <div class="card-header" id="device-id">
+              Featured
+          </div>
+          <div class="card-body">
+              <h5 class="card-title" id="gps">Special title treatment</h5>
+              <p class="card-text" id="gps-find-satellite">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="" target="blank" class="btn btn-sm btn-primary" id="track">Track</a>
+              <a href="" target="blank" class="btn btn-sm btn-primary" id="test">Test</a>
+          </div>
+      </div>
+  </template>
+</div>
+
+<script>
+
+    let devices_i = document.querySelector('#devices')
+    let template = document.querySelector('#device')
+    let indices_rj = []
+    let indices_d = []
+    let to_be_cloned = []
+    let devices = []
+    let clones = []
+    let response_json
+    let response
+    let clone
+    let i
+
+    let get_devices = async () => {
+        response = await fetch('http://127.0.0.1:1984/api/devices')
+        response_json = await response.json()
+
+        response_json.forEach(device => {
+            if (!indices_d.includes(device['device_id'])) {
+                devices.push(device)
+                to_be_cloned.push(device['device_id'])
+
+                indices_rj.push(device['device_id'])
+                indices_d.push(device['device_id'])
+            }
+        })
+
+        devices.forEach((device, idx) => {
+            if (!indices_rj.includes(device['device_id'])) {
+                devices[idx] = null
+            }
+        })
+
+        i = 0
+
+        while (i < devices.length) {
+            if (devices[i] == null) {
+                devices.splice(i, 1)
+                clones.splice(i, 1)
+
+                devices_i.removeChild(clones[i])
+                indices_d.splice(i, 1)
+            } else if (to_be_cloned.includes(devices[i]['device_id'])) {
+                clone = template.content.cloneNode(true)
+
+                clone.querySelector('#device-id').innerHTML = `<span>${devices[i]['device_name']}#${devices[i]['device_id']}</span><span class='text-secondary' style='float: right;'>${devices[i]['date']} ${devices[i]['time']}</span>`
+
+                if (devices[i]['gps'])
+                    clone.querySelector('#gps').innerHTML = 'GPS found successfully'
+                else
+                    clone.querySelector('#gps').innerHTML = 'GPS search failed'
+
+                if (devices[i]['gps_find_satellite'])
+                    clone.querySelector('#gps-find-satellite').innerHTML = 'GPS connected satellite successfully'
+                else
+                    clone.querySelector('#gps-find-satellite').innerHTML = 'GPS connection to satellite failed'
+
+                clone.querySelector('#track').href = `/app/track/${devices[i]['device_id']}`
+                clone.querySelector('#test').href = `/app/test/${devices[i]['device_id']}`
+
+                devices_i.appendChild(clone)
+
+                clones.push(clone)
+
+                to_be_cloned.splice(0, 1)
+
+                i ++
+            } else {
+                i ++
+            }
+        }
+    }
+
+    let interval = setInterval(get_devices, 1000)
+
+</script>
+
+{% endblock content %}
