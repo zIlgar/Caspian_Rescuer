@@ -1,9 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import DeviceSerializer
-from .models import Device
+from serial import Serial
 from pathlib import Path
 from re import split
+
+from .serializers import DeviceSerializer
+from .models import Device
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -78,3 +80,9 @@ def getLatest(request, pck):
         context['data'] = 'Not Received'
 
     return Response(context)
+
+@api_view(['GET'])
+def servoControl(request):
+    ser.write('servo'.encode())
+
+ser = Serial('/dev/ttyUSB0', 57600)

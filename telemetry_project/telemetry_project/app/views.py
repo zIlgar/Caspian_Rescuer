@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth import login, authenticate, logout
+from django.shortcuts import render, redirect
 
 def devices(request):
     context = {}
@@ -29,3 +30,25 @@ def test(request, pck):
     context = {'device_id' : pck}
 
     return render(request, 'app/test.html', context)
+
+def track_map(request, pck):
+    context = {'device_id' : pck}
+
+    return render(request, 'app/map.html', context)
+
+def admin_login(request):
+    context = {}
+
+    if request.method == 'POST':
+        user = authenticate(request, username = request.POST.get('username'), password = request.POST.get('password'))
+
+        if user:
+            print('hey')
+            login(request, user)
+
+    return render(request, 'app/admin-login.html', context)
+
+def logout_view(request):
+    logout(request)
+
+    return redirect('devices')

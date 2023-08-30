@@ -68,7 +68,8 @@ Device #{{ device_id }}
     </div>
 </div>
 
-<a class="btn btn-primary" style="position: fixed; right: 50px; bottom: 20px;" href="{% url 'detailed' device_id %}">Enter Detailed View</button>
+<a class="btn btn-success" style="position: fixed; right: 230px; bottom: 20px;" href="{% url 'track_map' device_id %}">Track on map</a>
+<a class="btn btn-primary" style="position: fixed; right: 50px; bottom: 20px;" href="{% url 'detailed' device_id %}">Enter Detailed View</a>
 
 <script>
     let info_boxes = document.querySelector('#info_boxes')

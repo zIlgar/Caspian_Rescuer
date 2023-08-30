@@ -31,6 +31,26 @@
                 Contact
             </a>
         </li>
+        <li>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="nav-link text-white">
+                    Log out
+                </a>
+                <a class="nav-link text-white">
+                    ~ {{ request.user.username }}
+                </a>
+            {% else %}
+                {% if 'admin_login' in request.path %}
+                    <a href="{% url 'admin_login' %}" class="nav-link text-white active">
+                        Admin Login
+                    </a>
+                {% else %}
+                    <a href="{% url 'admin_login' %}" class="nav-link text-white">
+                        Admin Login
+                    </a>
+                {% endif %}
+            {% endif %}
+        </li>
     </ul>
 </div>
 

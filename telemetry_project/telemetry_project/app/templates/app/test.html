@@ -24,7 +24,7 @@ Device #{{ device_id }}
     </h2>
 
     <div>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" onclick="req_servo()">
             Servo Test
         </button>
 
@@ -33,5 +33,11 @@ Device #{{ device_id }}
         </button>
     </div>
 </div>
+
+<script>
+    let req_servo = async () => {
+        await fetch('/api/servoControl')
+    }
+</script>
 
 {% endblock content %}

@@ -1,6 +1,24 @@
 # include <SoftwareSerial.h>
+#include <Servo.h>
+# include <dht.h>
 
 # define POT A0
+
+enum HCSR04_PIN {
+    TRIG = 2,
+    ECHO = 3
+};
+
+Servo servo;
+
+const int DHT11_PIN = 0;
+const int SERVO_PIN = 10;
+
+double humidity, temperature;
+float speed_of_sound = 0.034f;
+int duration, distance;
+
+dht DHT;
 
 char new_device[] = "\ndate:%d-%d-%d\ntime:%d.%d.%d\nrequest_type:%s\nrequest_id:%d\ndevice_id:%d\ngps:%d\ngps_find_satellite:%d\ngps_data:%d,%d\ncompass_angle:%d\nultrasonic:%d\nhumidity:%d\ntemperature:%d\nservo_angle:%d\n";
 char cur_req[] = "\ndate:%d-%d-%d\ntime:%d.%d.%d\nrequest_type:%s\nrequest_id:%d\ndevice_id:%d\ngps:%d\ngps_find_satellite:%d\ngps_data:%d,%d\nmust_go:%d,%d\ndistance:%d\ncompass_angle:%d\nmust_go_angle:%d\nultrasonic:%d\nhumidity:%d\ntemperature:%d\nservo_angle:%d\n";
@@ -22,7 +40,30 @@ short comp_ang, m_comp_ang;
 short ultra, humid, temp;
 short servo_ang;
 
+String msg = "";
+
 SoftwareSerial ss(19, 18);
+
+void readDHT11() {
+    DHT.read11(DHT11_PIN);
+
+    humidity = DHT.humidity;
+    temperature = DHT.temperature;
+}
+
+void readHCSR04() {
+    servo.attach(SERVO_PIN);
+
+    digitalWrite(TRIG, LOW);
+    delayMicroseconds(2);
+
+    digitalWrite(TRIG, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG, LOW);
+
+    duration = pulseIn(ECHO, HIGH);
+    distance = duration * speed_of_sound / 2;
+}
 
 void send_msg(char buf[], short send_size) {
     Serial.print("begin");
@@ -39,6 +80,11 @@ void send_msg(char buf[], short send_size) {
 }
 
 void setup() {
+    pinMode(TRIG, OUTPUT);
+    pinMode(ECHO, INPUT);
+
+    readDHT11();
+    readHCSR04();
 
     day_s = 28;
     month_s = 6;
@@ -69,10 +115,6 @@ void setup() {
 
     comp_ang = 90;
 
-    ultra = 255;
-    humid = 25;
-    temp = 25;
-
     servo_ang = 90;
 
     Serial.begin(57600);
@@ -90,25 +132,37 @@ void setup() {
 
     }
 
-    sprintf(buf, new_device, year_s, month_s, day_s, hour_s, minute_s, second_s, req_type, req_id, dev_id, gps_w, gps_f_s, x_, y_, comp_ang, ultra, humid, temp, servo_ang);
+    sprintf(buf, new_device, year_s, month_s, day_s, hour_s, minute_s, second_s, req_type, req_id, dev_id, gps_w, gps_f_s, x_, y_, comp_ang, distance, humidity, temperature, servo_ang);
 
     send_msg(buf, 8);
 
     req_type = "CUR_DATA";
-
 }
 
 void loop() {
+    readDHT11();
+    readHCSR04();
 
-    dis = 10;
+    if (Serial.available())
+        msg += (char) Serial.read();
+
+    if (msg == "servo") {
+        servo.write(0);
+        delay(1000);
+        servo.write(90);
+        delay(1000);
+        servo.write(180);
+        delay(1000);
+
+        msg = "";
+    }
 
     comp_ang = analogRead(POT);
     m_comp_ang = 90;
 
-    sprintf(buf, cur_req, year_s, month_s, day_s, hour_s, minute_s, second_s, req_type, req_id, dev_id, gps_w, gps_f_s, x_, y_, m_x_, m_y_, dis, comp_ang, m_comp_ang, ultra, humid, temp, servo_ang);
+    sprintf(buf, cur_req, year_s, month_s, day_s, hour_s, minute_s, second_s, req_type, req_id, dev_id, gps_w, gps_f_s, x_, y_, m_x_, m_y_, dis, comp_ang, m_comp_ang, distance, humidity, temperature, servo_ang);
 
     send_msg(buf, 256);
 
     req_id ++;
-
 }
