@@ -5,14 +5,14 @@
 # define POT A0
 
 enum HCSR04_PIN {
-    TRIG = 2,
-    ECHO = 3
+    TRIG = 3,
+    ECHO = 2
 };
 
 Servo servo;
 
 const int DHT11_PIN = 11;
-const int SERVO_PIN = 10;
+const int SERVO_PIN = 13;
 
 double humidity, temperature;
 float speed_of_sound = 0.034f;
