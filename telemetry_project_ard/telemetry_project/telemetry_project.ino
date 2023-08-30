@@ -11,7 +11,7 @@ enum HCSR04_PIN {
 
 Servo servo;
 
-const int DHT11_PIN = 0;
+const int DHT11_PIN = 11;
 const int SERVO_PIN = 10;
 
 double humidity, temperature;
