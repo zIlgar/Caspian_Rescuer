@@ -89,8 +89,6 @@ while True:
 
         elif 'abcdefghijklmnopqrstuvwxyz' in all_text:
             ser.write('attaboy'.encode())
-
-        # print(data_read)
     except Exception as e:
         print(e)
         continue

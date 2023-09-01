@@ -21,7 +21,7 @@ See Device #{{ device_id }} on Map
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0NDJlY2I0NC1kYTlhLTRlYjItOTljMi01MTYzNmQyYzU4MDQiLCJpZCI6MTYxODQ3LCJpYXQiOjE2OTI2OTAzNzV9.VvykNlaA1m_1glf0zt01-DHOiH7eLz3GN5ioIg2vVRw'
 
     let fetch_log = async pck => {
-        let response = await fetch(`http://127.0.0.1:1984/api/getLog/${pck}`)
+        let response = await fetch(`/api/getLog/${pck}`)
         let response_json = await response.json()
 
         if (!coors)

@@ -46,6 +46,8 @@ def admin_login(request):
             print('hey')
             login(request, user)
 
+            return redirect('devices')
+
     return render(request, 'app/admin-login.html', context)
 
 def logout_view(request):

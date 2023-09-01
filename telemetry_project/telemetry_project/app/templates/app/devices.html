@@ -10,18 +10,22 @@ Devices
 
 <div style="width:100%; overflow-y:scroll;" id="devices">
     <template id="device">
-      <div class="card m-5">
-          <div class="card-header" id="device-id">
-              Featured
-          </div>
-          <div class="card-body">
-              <h5 class="card-title" id="gps">Special title treatment</h5>
-              <p class="card-text" id="gps-find-satellite">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="" target="blank" class="btn btn-sm btn-primary" id="track">Track</a>
-              <a href="" target="blank" class="btn btn-sm btn-primary" id="test">Test</a>
-          </div>
-      </div>
-  </template>
+        <div class="card m-5">
+            <div class="card-header" id="device-id">
+                Featured
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" id="gps">Special title treatment</h5>
+                <p class="card-text" id="gps-find-satellite">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="" target="blank" class="btn btn-sm btn-primary" id="track">Track</a>
+                {% if request.user.is_authenticated %}
+                    <a href="" target="blank" class="btn btn-sm btn-primary" id="test">Test</a>
+                {% else %}
+                    <a href="" target="blank" class="btn btn-sm btn-primary d-none" id="test">Test</a>
+                {% endif %}
+            </div>
+        </div>
+    </template>
 </div>
 
 <script>
@@ -39,7 +43,7 @@ Devices
     let i
 
     let get_devices = async () => {
-        response = await fetch('http://127.0.0.1:1984/api/devices')
+        response = await fetch('/api/devices')
         response_json = await response.json()
 
         response_json.forEach(device => {

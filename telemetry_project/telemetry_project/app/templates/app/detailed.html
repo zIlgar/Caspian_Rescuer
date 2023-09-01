@@ -104,7 +104,7 @@ Device #{{ device_id }}
     let reserved = []
 
     let getLog = async () => {
-        response = await fetch('http://127.0.0.1:1984/api/getLog/{{ device_id }}')
+        response = await fetch('/api/getLog/{{ device_id }}')
         response_json = await response.json()
 
         if (response_json['status'] === 'attaboy') {
@@ -132,7 +132,7 @@ Device #{{ device_id }}
                     m_y = parseInt(m_coors[1]) / 1000
 
                     temperature = parseInt(row['temperature']) / 100
-                    humidity = paseInt(row['humidity']) / 100
+                    humidity = parseInt(row['humidity']) / 100
 
                     clone.querySelector('#gps-data').innerHTML = `Coors are ${x}", ${y}"`
                     clone.querySelector('#must-go').innerHTML = `Must go to coors ${m_x}", ${m_y}". ${row['distance']} km remaining`

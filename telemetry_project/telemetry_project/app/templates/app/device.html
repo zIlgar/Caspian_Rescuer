@@ -71,7 +71,7 @@ Device #{{ device_id }}
     let response
 
     let getLog = async () => {
-        response = await fetch('http://127.0.0.1:1984/api/getLatest/{{ device_id }}')
+        response = await fetch('/api/getLatest/{{ device_id }}')
         response_json = await response.json()
 
         if (response_json['status'] === 'attaboy') {
@@ -86,8 +86,8 @@ Device #{{ device_id }}
                 m_x = parseInt(m_coors[0]) / 1000
                 m_y = parseInt(m_coors[1]) / 1000
 
-                temperature = `${paseInt(row['temperature']) / 100}°`
-                humidity = `${parseInt(row['humitidy']) / 100}%`
+                temperature = `${parseInt(row['temperature']) / 100}°`
+                humidity = `${parseInt(row['humidity']) / 100}%`
 
                 ultrasonic = row['ultrasonic']
                 gyro = row['compass_angle'] + '°'
