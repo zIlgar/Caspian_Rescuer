@@ -131,8 +131,8 @@ Device #{{ device_id }}
                     m_x = parseInt(m_coors[0]) / 1000
                     m_y = parseInt(m_coors[1]) / 1000
 
-                    temperature = parseInt(row['temperature']) / 1000
-                    humidity = paseInt(row['humidity']) / 1000
+                    temperature = parseInt(row['temperature']) / 100
+                    humidity = paseInt(row['humidity']) / 100
 
                     clone.querySelector('#gps-data').innerHTML = `Coors are ${x}", ${y}"`
                     clone.querySelector('#must-go').innerHTML = `Must go to coors ${m_x}", ${m_y}". ${row['distance']} km remaining`

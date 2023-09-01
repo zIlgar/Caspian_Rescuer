@@ -86,8 +86,8 @@ Device #{{ device_id }}
                 m_x = parseInt(m_coors[0]) / 1000
                 m_y = parseInt(m_coors[1]) / 1000
 
-                temperature = `${paseInt(row['temperature']) / 1000}°`
-                humidity = `${parseInt(row['humitidy']) / 1000}%`
+                temperature = `${paseInt(row['temperature']) / 100}°`
+                humidity = `${parseInt(row['humitidy']) / 100}%`
 
                 ultrasonic = row['ultrasonic']
                 gyro = row['compass_angle'] + '°'
