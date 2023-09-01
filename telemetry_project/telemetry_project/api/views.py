@@ -1,6 +1,5 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from serial import Serial
 from pathlib import Path
 from re import split
 
@@ -90,5 +89,3 @@ def servoControl(request):
         dest.write('1')
 
     return Response({'send' : 'true'})
-
-ser = Serial('/dev/ttyUSB0', 57600)
