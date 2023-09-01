@@ -86,7 +86,8 @@ def getLatest(request, pck):
 
 @api_view(['GET'])
 def servoControl(request):
-    ser.write('servo'.encode())
+    with open('./carry.txt', 'w') as dest:
+        dest.write('1')
 
     return Response({'send' : 'true'})
 

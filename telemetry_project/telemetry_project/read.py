@@ -18,6 +18,18 @@ log = ''
 
 while True:
     try:
+        with open('carry.txt', 'r') as dest:
+            carry = dest.read()
+
+        if carry == '1':
+            ser.write('servo'.encode('utf-8'))
+            print('hey')
+
+            with open('carry.txt', 'w') as dest:
+                dest.write('0')
+        else:
+            print(carry)
+
         time.sleep(1)
         data_read = ser.read_all().decode()
 
@@ -78,8 +90,9 @@ while True:
         elif 'abcdefghijklmnopqrstuvwxyz' in all_text:
             ser.write('attaboy'.encode())
 
-        print(data_read)
-    except:
+        # print(data_read)
+    except Exception as e:
+        print(e)
         continue
 
 ser.close()
