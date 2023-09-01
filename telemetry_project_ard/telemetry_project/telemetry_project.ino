@@ -47,8 +47,8 @@ String msg = "";
 SoftwareSerial ss(19, 18);
 
 void readDHT11() {
-    humidity = dht.readHumidity() * 1000;
-    temperature = dht.readTemperature() * 1000;
+    humidity = dht.readHumidity() * 100;
+    temperature = dht.readTemperature() * 100;
 }
 
 void readHCSR04() {
