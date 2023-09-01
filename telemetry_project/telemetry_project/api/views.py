@@ -39,12 +39,15 @@ def getLog(request, pck):
             context['data'] = []
 
             for row in data:
-                row_data = [data.strip('=') for data in split("[\n:]+", row) if data.strip('=')]
+                try:
+                    row_data = [data.strip('=') for data in split("[\n:]+", row) if data.strip('=')]
 
-                row_json = {row_data[i]: row_data[i + 1] for i in range(0, len(row_data), 2)}
-                row_json['Time'] = row_json['time'].replace('.', ':')
+                    row_json = {row_data[i]: row_data[i + 1] for i in range(0, len(row_data), 2)}
+                    row_json['Time'] = row_json['time'].replace('.', ':')
 
-                context['data'].append(row_json)
+                    context['data'].append(row_json)
+                except:
+                    continue
 
     else:
         context['status'] = 'not good'
@@ -84,5 +87,7 @@ def getLatest(request, pck):
 @api_view(['GET'])
 def servoControl(request):
     ser.write('servo'.encode())
+
+    return Response({'send' : 'true'})
 
 ser = Serial('/dev/ttyUSB0', 57600)
