@@ -76,12 +76,12 @@ Devices
 
                 clone.querySelector('#device-id').innerHTML = `<span>${devices[i]['device_name']}#${devices[i]['device_id']}</span><span class='text-secondary' style='float: right;'>${devices[i]['date']} ${devices[i]['time']}</span>`
 
-                if (devices[i]['gps'])
+                if (parseInt(devices[i]['gps']))
                     clone.querySelector('#gps').innerHTML = 'GPS found successfully'
                 else
                     clone.querySelector('#gps').innerHTML = 'GPS search failed'
 
-                if (devices[i]['gps_find_satellite'])
+                if (parseInt(devices[i]['gps_find_satellite']))
                     clone.querySelector('#gps-find-satellite').innerHTML = 'GPS connected satellite successfully'
                 else
                     clone.querySelector('#gps-find-satellite').innerHTML = 'GPS connection to satellite failed'
