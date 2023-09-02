@@ -149,7 +149,7 @@ void setup() {
     req_type = "CUR_DATA";
 
     servo.attach(SERVO_PIN);
-    esc.attach(ESC_PIN)
+    esc.attach(ESC_PIN, 1000, 2000);
 
     while (!mpu.begin()) {
         delay(10);
