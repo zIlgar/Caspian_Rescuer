@@ -52,7 +52,7 @@ String msg = "";
 
 SoftwareSerial ss(19, 18);
 
-Adafruit_MPU6050 mpu;
+// Adafruit_MPU6050 mpu;
 double gyro_value = 0;
 
 void readDHT11() {
@@ -151,13 +151,13 @@ void setup() {
     servo.attach(SERVO_PIN);
     esc.attach(ESC_PIN, 1000, 2000);
 
-    while (!mpu.begin()) {
-        delay(10);
-    }
+    // while (!mpu.begin()) {
+    //     delay(10);
+    // }
 
-    mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-    mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-    mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+    // mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+    // mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+    // mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
 }
 
 void loop() {
@@ -166,16 +166,16 @@ void loop() {
 
     esc.write(pot_value)
 
-    sensors_event_t a, g, temp;
-    mpu.getEvent(&a, &g, &temp);
-    gyro_value += g.gyro.z;
+    // sensors_event_t a, g, temp;
+    // mpu.getEvent(&a, &g, &temp);
+    // gyro_value += g.gyro.z;
 
     Serial.println(gyro_value * 24);
 
-    if (gyro_value > 0)
-        gyro_value = gyro_value - ((int) gyro_value / 60)  * 60;
-    else
-        gyro_value = gyro_value - ((int) gyro_value / - 60) * - 60;
+    // if (gyro_value > 0)
+    //     gyro_value = gyro_value - ((int) gyro_value / 60)  * 60;
+    // else
+    //     gyro_value = gyro_value - ((int) gyro_value / - 60) * - 60;
 
     delay(100);
 
@@ -201,11 +201,11 @@ void loop() {
         Serial.print(msg);
     }
 
-    comp_ang = gyro_value * 24;
+    // comp_ang = gyro_value * 24;
     m_comp_ang = 90;
 
-    servo.write(45 + min(max(gyro_value * - 24, - 45), 45));
-    Serial.println(45 + min(max(gyro_value * - 24, - 45), 45));
+    // servo.write(45 + min(max(gyro_value * - 24, - 45), 45));
+    // Serial.println(45 + min(max(gyro_value * - 24, - 45), 45));
 
     sprintf(buf, cur_req, year_s, month_s, day_s, hour_s, minute_s, second_s, req_type, req_id, dev_id, gps_w, gps_f_s, x_, y_, m_x_, m_y_, dis, comp_ang, m_comp_ang, distance, humidity, temperature, servo_ang);
 
