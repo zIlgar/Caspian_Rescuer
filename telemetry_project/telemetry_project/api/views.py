@@ -89,3 +89,24 @@ def servoControl(request):
         dest.write('1')
 
     return Response({'send' : 'true'})
+
+@api_view(['GET'])
+def motorControl(request):
+    with open('./motor.txt', 'w') as dest:
+        dest.write('1')
+
+    return Response({'send' : 'true'})
+
+@api_view(['GET'])
+def manualControl(request):
+    with open('./mode.txt', 'w') as dest:
+        dest.write('1')
+
+    return Response({'send' : 'true'})
+
+@api_view(['GET'])
+def autonomusControl(request):
+    with open('./mode.txt', 'w') as dest:
+        dest.write('0')
+
+    return Response({'send' : 'true'})

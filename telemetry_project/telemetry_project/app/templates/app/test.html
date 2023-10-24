@@ -30,7 +30,7 @@ Device #{{ device_id }}
             Servo Test
         </button>
 
-        <button class="btn ms-4 btn-primary">
+        <button class="btn ms-4 btn-primary" onclick="req_motor()">
             Motor Test
         </button>
     </div>
@@ -39,6 +39,12 @@ Device #{{ device_id }}
 <script>
     let req_servo = async () => {
         await fetch('/api/servoControl')
+    }
+
+    let req_motor = async () => {
+	      await fetch('/api/motorControl')
+	      
+	      console.log("hello, wolrd!")
     }
 </script>
 

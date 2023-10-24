@@ -20,6 +20,7 @@ Devices
                 <a href="" target="blank" class="btn btn-sm btn-primary" id="track">Track</a>
                 {% if request.user.is_authenticated %}
                     <a href="" target="blank" class="btn btn-sm btn-primary" id="test">Test</a>
+                    <button id="change_mode" class="btn btn-sm btn-success">Manual</button>
                 {% else %}
                     <a href="" target="blank" class="btn btn-sm btn-primary d-none" id="test">Test</a>
                 {% endif %}
@@ -39,8 +40,26 @@ Devices
     let clones = []
     let response_json
     let response
+    let device
     let clone
     let i
+
+    let change_mode = async (change_mode_id) => {
+        device = document.querySelector(`#change_mode${change_mode_id}`)
+        console.log('hey')
+
+        if (device.innerHTML == 'Manual') {
+            device.innerHTML = 'Autonomus'
+            device.className = 'btn btn-sm btn-danger'
+
+            await fetch('/api/manualControl')
+        } else {
+            device.innerHTML = 'Manual'
+            device.className = 'btn btn-sm btn-success'
+
+            await fetch('/api/autonomusControl')
+        }
+    }
 
     let get_devices = async () => {
         response = await fetch('/api/devices')
@@ -87,7 +106,8 @@ Devices
                     clone.querySelector('#gps-find-satellite').innerHTML = 'GPS connection to satellite failed'
 
                 clone.querySelector('#track').href = `/app/track/${devices[i]['device_id']}`
-                clone.querySelector('#test').href = `/app/test/${devices[i]['device_id']}`
+                clone.querySelector('#change_mode').setAttribute('onclick', `change_mode(${devices[i]['device_id']})`)
+                clone.querySelector('#change_mode').id = `change_mode${devices[i]['device_id']}`
 
                 devices_i.appendChild(clone)
 

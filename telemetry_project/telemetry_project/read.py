@@ -16,6 +16,8 @@ ser = serial.Serial('/dev/ttyUSB0', 57600)
 all_text = ''
 log = ''
 
+previous_mode = '0'
+
 while True:
     try:
         with open('carry.txt', 'r') as dest:
@@ -23,12 +25,29 @@ while True:
 
         if carry == '1':
             ser.write('servo'.encode('utf-8'))
-            print('hey')
 
             with open('carry.txt', 'w') as dest:
                 dest.write('0')
-        else:
-            print(carry)
+            
+        with open('motor.txt', 'r') as dest:
+            motor = dest.read()
+
+        if motor == '1':
+            ser.write('motor'.encode('utf-8'))
+
+            with open('motor.txt', 'w') as dest:
+                dest.write('0')
+
+        with open('mode.txt', 'r') as dest:
+            mode = dest.read()
+
+        if mode != previous_mode:
+            if mode == '1':
+                ser.write('manual'.encode('utf-8'))
+            else:
+                ser.write('auto'.encode('utf-8'))
+
+            previous_mode = mode
 
         time.sleep(1)
         data_read = ser.read_all().decode()
